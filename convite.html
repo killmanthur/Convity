@@ -164,7 +164,10 @@
             } else if (step === 3) {
                 const d = document.getElementById('dt').value, h = document.getElementById('hr').value;
                 if (!d || !h) return alert("Preencha data e hora!");
-                const msg = `Oii! Aceito o convite: *${data.t}* ${theme}\n\nEscolhi: *${data.o[mainChoice].m}${subChoice}*\nData: *${new Date(d).toLocaleDateString('pt-BR', { timeZone: 'UTC' })} às ${h}*\n\nConvite criado via: https://convity.netlify.app/`;
+
+                // MENSAGEM LIMPA (SEM LINK)
+                const msg = `Oii! Aceito o convite: *${data.t}* ${theme}\n\nEscolhi: *${data.o[mainChoice].m}${subChoice}*\nData: *${new Date(d).toLocaleDateString('pt-BR', { timeZone: 'UTC' })} às ${h}*`;
+
                 window.location.href = `https://wa.me/${data.n}?text=${encodeURIComponent(msg)}`;
             }
         }
@@ -175,7 +178,6 @@
             document.getElementById('btnAction').style.background = "#25D366";
         }
 
-        // Partículas (Cópia simplificada)
         const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d');
         let pts = []; function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
