@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Um convite para você</title>
+    <style>
+        :root {
+            --primary: #333;
+            --bg-grad: #fff;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-grad);
+            overflow: hidden;
+            /* Impede scroll global enquanto animação roda */
+        }
+
+        #bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            /* Altura total para parecer App */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            text-align: center;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: popUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* GRID DE OPÇÕES */
+        .options-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid transparent;
+            padding: 16px;
+            border-radius: 16px;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #444;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Efeito de seleção */
+        .option-btn.selected {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary);
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .check-icon {
+            opacity: 0;
+            transform: scale(0);
+            transition: 0.2s;
+        }
+
+        .option-btn.selected .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* INPUTS DATE/TIME */
+        .input-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #666;
+            margin-left: 5px;
+        }
+
+        input[type="date"],
+        input[type="time"] {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            border: none;
+            background: #f0f2f5;
+            font-size: 1.1rem;
+            color: #333;
+            margin-top: 5px;
+            font-family: inherit;
+        }
+
+        .btn-main {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: 0.2s;
+        }
+
+        .btn-main:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes popUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="app-container">
+        <div class="card">
+            <h1 id="title">...</h1>
+            <p id="desc">...</p>
+
+            <div id="content"></div>
+
+            <button class="btn-main" id="btnAction" onclick="next()">Começar</button>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. ENGINE DE DADOS ---
+        const params = new URLSearchParams(window.location.search);
+        let data = {};
+
+        try {
+            const raw = params.get('d');
+            if (!raw) throw new Error("No Data");
+            data = JSON.parse(decodeURIComponent(escape(atob(raw))));
+        } catch (e) {
+            document.querySelector('.card').innerHTML = "<h2>Erro 😕</h2><p>Link inválido ou expirado.</p>";
+        }
+
+        // --- 2. ENGINE DE TEMAS ---
+        const themes = {
+            romantico: { color: '#d63384', bg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)', emoji: '❤️' },
+            amizade: { color: '#007bff', bg: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)', emoji: '🍻' },
+            festa: { color: '#7f00ff', bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', emoji: '🎉' },
+            natureza: { color: '#218c74', bg: 'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)', emoji: '🌿' },
+            dark: { color: '#2d3436', bg: 'linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%)', emoji: '✨' }
+        };
+
+        const theme = themes[data.tm || 'romantico'];
+        const r = document.documentElement;
+        r.style.setProperty('--primary', theme.color);
+        r.style.setProperty('--bg-grad', theme.bg);
+
+        if (data.tm === 'dark') {
+            r.style.setProperty('--card-bg', 'rgba(255,255,255,0.95)');
+        }
+
+        // --- 3. FLUXO DO USUÁRIO ---
+        let step = 1;
+        let mainChoice = null;
+        let subChoice = "";
+
+        // Título Inicial
+        document.getElementById('title').innerText = data.t;
+        document.getElementById('desc').innerText = "Você recebeu um convite especial!";
+        document.getElementById('btnAction').innerText = "Ver opções";
+
+        function renderOptions(optionsArray, type) {
+            let html = '<div class="options-wrapper">';
+            optionsArray.forEach((opt, idx) => {
+                // Se for sub-opção string, usa ela mesma. Se for objeto principal, usa .m
+                const label = type === 'main' ? opt.m : opt;
+                const val = type === 'main' ? idx : opt;
+
+                html += `
+                <div class="option-btn" onclick="select(this, '${val}')">
+                    ${label}
+                    <span class="check-icon">✅</span>
+                </div>
+            `;
+            });
+            document.getElementById('content').innerHTML = html + '</div>';
+        }
+
+        let tempSelection = null;
+
+        function select(el, val) {
+            // Remove active class from others
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+            tempSelection = val;
+        }
+
+        function next() {
+            const title = document.getElementById('title');
+            const desc = document.getElementById('desc');
+            const btn = document.getElementById('btnAction');
+            const content = document.getElementById('content');
+
+            // Tela Inicial -> Tela 1 (Opções Principais)
+            if (btn.innerText === "Ver opções") {
+                title.innerText = "O que vamos fazer?";
+                desc.innerText = "Escolha a melhor opção:";
+                renderOptions(data.o, 'main');
+                btn.innerText = "Continuar";
+                return;
+            }
+
+            // Validação de seleção
+            if ((step === 1 || step === 2) && tempSelection === null) {
+                alert("Escolha uma opção para continuar!"); return;
+            }
+
+            if (step === 1) {
+                mainChoice = tempSelection;
+                const item = data.o[mainChoice];
+
+                // Tem sub-opções?
+                if (item.s && item.s.length > 0) {
+                    step = 2;
+                    tempSelection = null;
+                    title.innerText = item.m;
+                    desc.innerText = "Escolha um detalhe:";
+                    renderOptions(item.s, 'sub');
+                } else {
+                    step = 3;
+                    showDateScreen();
+                }
+            } else if (step === 2) {
+                subChoice = " (" + tempSelection + ")";
+                step = 3;
+                showDateScreen();
+            } else if (step === 3) {
+                sendWhatsApp();
+            }
+        }
+
+        function showDateScreen() {
+            const title = document.getElementById('title');
+            const desc = document.getElementById('desc');
+            const content = document.getElementById('content');
+            const btn = document.getElementById('btnAction');
+
+            title.innerText = "Quando?";
+            desc.innerText = "Vamos marcar a data:";
+            content.innerHTML = `
+            <div class="input-group">
+                <label>DATA</label>
+                <input type="date" id="dateInput">
+            </div>
+            <div class="input-group">
+                <label>HORÁRIO</label>
+                <input type="time" id="timeInput">
+            </div>
+        `;
+            btn.innerText = "Confirmar Encontro ✅";
+            btn.style.backgroundColor = "#25D366"; // Zap Green
+        }
+
+        function sendWhatsApp() {
+            const d = document.getElementById('dateInput').value;
+            const t = document.getElementById('timeInput').value;
+            if (!d || !t) return alert("Preencha data e hora!");
+
+            const dateF = new Date(d).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+            const activity = data.o[mainChoice].m + subChoice;
+
+            let msg = `Oii! Aceito o convite: *${data.t}* ${theme.emoji}\n\n`;
+            msg += `Escolhi: *${activity}*\n`;
+            msg += `Data: *${dateF} às ${t}*`;
+
+            window.location.href = `https://wa.me/${data.n}?text=${encodeURIComponent(msg)}`;
+        }
+
+        // --- 4. ENGINE DE PARTICULAS (Cópia leve do index) ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height + canvas.height;
+                this.size = Math.random() * 15 + 10;
+                this.speed = Math.random() * 1.5 + 0.5;
+                this.opacity = 1;
+            }
+            update() {
+                this.y -= this.speed;
+                this.opacity -= 0.003;
+                if (this.y < -50) this.y = canvas.height + 50;
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px serif`;
+                ctx.fillText(theme.emoji, this.x, this.y);
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        for (let i = 0; i < 20; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+    </script>
+</body>
+
+</html>
