@@ -51,6 +51,28 @@
             margin-bottom: 25px;
         }
 
+        /* Reduz o tamanho e altera a cor das sub-opções */
+.sub-item input {
+    font-size: 14px; /* Fonte menor */
+    padding: 10px;    /* Padding reduzido */
+    margin-bottom: 5px;
+    background: rgba(255, 255, 255, 0.6); /* Mais transparente */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Ajusta o botão de deletar das sub-opções para combinar */
+.sub-item .btn-del {
+    height: 38px; /* Altura menor para alinhar com o input */
+    margin-bottom: 5px;
+    font-size: 18px;
+    background: #a1a1a1;
+}
+
+/* Identação opcional para parecer uma lista aninhada */
+#lista-opcoes .sub-item {
+    padding-left: 15px;
+}
+
         .brand {
             font-size: 2.5rem;
             font-weight: 900;
@@ -232,7 +254,7 @@
             <button class="btn-hero" onclick="copiarLink()">Copiar Link 📋</button>
 
             <a id="btnTestar" href="#" target="_blank" class="btn-hero"
-                style="background: #444; margin-top: 10px;">Testar Convite 👁️</a>
+                style="background: #444; margin-top: 10px;">Testar Convite</a>
 
             <button onclick="document.getElementById('modal').style.display='none'"
                 style="background:none; border:none; color:#999; margin-top:15px; cursor:pointer; font-size: 0.9rem;">Fechar</button>
@@ -262,7 +284,7 @@
             div.id = id;
             div.innerHTML = `
             <div style="display:flex; gap:10px;">
-                <input type="text" class="main-in" placeholder="Ex: Cinema" style="margin:0">
+                <input type="text" class="main-in" placeholder="Ex: Cinema, Jantar, Passeio..." style="margin:0">
                 <button class="btn-del" onclick="document.getElementById('${id}').remove()">✕</button>
             </div>
             <div id="subs-${id}"></div>
@@ -272,10 +294,13 @@
         }
 
         function addSub(parentId) {
-            const div = document.createElement('div');
-            div.className = 'sub-item';
-            div.innerHTML = `<input type="text" class="sub-in" placeholder="Ex: Terror" style="margin:0"><button class="btn-del" onclick="this.parentElement.remove()">-</button>`;
-            document.getElementById(`subs-${parentId}`).appendChild(div);
+                const div = document.createElement('div');
+                div.className = 'sub-item';
+                div.innerHTML = `
+                   <input type="text" class="sub-in" placeholder="Ex: Terror, Comédia, Romance..." style="margin:0">
+                   <button class="btn-del" style="height: 39px;" onclick="this.parentElement.remove()">-</button>
+                `;
+                document.getElementById(`subs-${parentId}`).appendChild(div);
         }
 
         function gerarLink() {
