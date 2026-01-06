@@ -4,22 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Criar Experience ⚡</title>
+    <title>Convity - Criar Convite Especial ✨</title>
     <style>
         :root {
             --primary: #d63384;
             --bg-grad: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
             --card-bg: rgba(255, 255, 255, 0.85);
             --text: #333;
-            --text-title: #ffffff;
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
 
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
             outline: none;
-            transition: background 0.4s, color 0.4s, border-color 0.4s;
+            transition: background 0.4s, color 0.4s;
         }
 
         body {
@@ -27,11 +25,10 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            overflow-x: hidden;
             background: var(--bg-grad);
+            overflow-x: hidden;
         }
 
-        /* Canvas para o fundo animado */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -42,33 +39,34 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
-            padding: 20px 20px 100px 20px;
+            padding: 20px 20px 50px 20px;
             position: relative;
             z-index: 2;
         }
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        h1 {
-            font-size: 2rem;
-            color: var(--text-title);
+        .brand {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin: 0;
-            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
         }
 
-        /* CARD COM EFEITO DE VIDRO (Glassmorphism) */
         .glass-card {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
+            border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: var(--shadow);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             padding: 20px;
             margin-bottom: 20px;
         }
@@ -76,28 +74,21 @@
         label {
             display: block;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--text);
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
+            font-size: 0.8rem;
             text-transform: uppercase;
         }
 
         input,
         select {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             border-radius: 12px;
-            border: 2px solid rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(0, 0, 0, 0.05);
             background: rgba(255, 255, 255, 0.9);
             font-size: 16px;
             margin-bottom: 15px;
-        }
-
-        input:focus,
-        select:focus {
-            border-color: var(--primary);
-            transform: scale(1.01);
         }
 
         .phone-row {
@@ -109,70 +100,22 @@
             width: 35%;
         }
 
-        /* LISTA DE OPÇÕES */
         .option-card {
-            background: rgba(255, 255, 255, 0.6);
-            border-left: 5px solid var(--primary);
+            background: rgba(255, 255, 255, 0.5);
+            border-left: 6px solid var(--primary);
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 15px;
             margin-bottom: 15px;
-            animation: slideIn 0.3s ease-out;
         }
 
-        .row-main {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .btn-mini {
-            background: #ff4757;
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .sub-list {
-            margin-top: 10px;
-            padding-left: 20px;
-        }
-
-        .sub-item {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-            animation: fadeIn 0.3s;
-        }
-
-        .sub-item input {
-            margin-bottom: 0;
-            padding: 10px;
-            font-size: 14px;
-        }
-
-        /* BOTÕES */
-        .btn-add-sub {
+        .btn-add {
             background: rgba(0, 0, 0, 0.05);
-            color: var(--text);
             border: 2px dashed rgba(0, 0, 0, 0.1);
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            padding: 10px;
+            border-radius: 10px;
             width: 100%;
             cursor: pointer;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-
-        .btn-add-sub:hover {
-            background: rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
         }
 
         .btn-hero {
@@ -184,18 +127,24 @@
             font-size: 1.1rem;
             font-weight: 800;
             width: 100%;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             cursor: pointer;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
         }
 
-        .btn-hero:active {
-            transform: scale(0.98);
+        .sub-item {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
         }
 
-        /* Modal de Resultado */
+        .btn-del {
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            width: 40px;
+        }
+
         #modal {
             position: fixed;
             top: 0;
@@ -212,69 +161,18 @@
 
         .modal-content {
             background: white;
-            padding: 30px;
-            border-radius: 20px;
+            padding: 25px;
+            border-radius: 24px;
             text-align: center;
             width: 100%;
-            max-width: 400px;
         }
 
-        .link-display {
-            background: #f1f2f6;
-            padding: 10px;
-            border-radius: 8px;
-            font-family: monospace;
-            word-break: break-all;
-            margin: 15px 0;
+        footer {
+            text-align: center;
             font-size: 0.8rem;
+            color: #777;
+            margin-top: 20px;
         }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .brand-name {
-        font-family: 'Arial Rounded MT Bold', 'Helvetica', sans-serif;
-        background: var(--primary);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 900;
-        font-size: 2.2rem;
-        margin-bottom: 5px;
-        display: block;
-    }
-
-    footer {
-        text-align: center;
-        padding: 20px;
-        font-size: 0.85rem;
-        color: #666;
-        opacity: 0.8;
-    }
-
-    footer a {
-        color: var(--primary);
-        text-decoration: none;
-        font-weight: bold;
-    }
     </style>
 </head>
 
@@ -284,17 +182,17 @@
 
     <div class="container">
         <header>
-            <h1>Design your Date ✨</h1>
+            <h1 class="brand">Convity</h1>
+            <p style="color: #666; margin: 0;">Crie convites mágicos para WhatsApp</p>
         </header>
 
         <div class="glass-card">
-            <label>🎨 Vibe do Convite (Tema)</label>
+            <label>🎨 Escolha o Tema</label>
             <select id="temaSelect" onchange="mudarTema()">
-                <option value="romantico">💘 Romance (Amor)</option>
-                <option value="amizade">🍻 Resenha (Amigos)</option>
-                <option value="festa">🎉 Balada (Festa)</option>
-                <option value="natureza">🌿 Natureza (Chill)</option>
-                <option value="dark">♠️ Dark (Elegante)</option>
+                <option value="romantico">❤️ Romântico</option>
+                <option value="amizade">🍻 Amizade</option>
+                <option value="festa">🎉 Festa / Rolê</option>
+                <option value="dark">♠️ Dark / Elegante</option>
             </select>
 
             <label>📱 Seu WhatsApp</label>
@@ -307,199 +205,114 @@
             </div>
 
             <label>🖊️ Título do Convite</label>
-            <input type="text" id="titulo" placeholder="Ex: Topa sair comigo?">
+            <input type="text" id="titulo" placeholder="Ex: Quer sair comigo?">
         </div>
 
         <div id="lista-opcoes"></div>
 
-        <button class="btn-hero" style="background: #333; margin-bottom: 10px;" onclick="addOpcaoMain()">+ Nova Opção de
-            Date</button>
-        <button class="btn-hero" onclick="gerarLink()">GERAR CONVITE MÁGICO 🚀</button>
-        <footer>
-            Criado gratuitamente com o <strong>Convity</strong>.
-        </footer>
+        <button class="btn-add" onclick="addOpcaoMain()">+ Adicionar Opção de Date/Rolê</button>
+        <button class="btn-hero" onclick="gerarLink()">GERAR MEU LINK 🚀</button>
+
+        <footer>Criado gratuitamente com o <strong>Convity</strong></footer>
     </div>
 
-    <!-- Modal Resultado -->
     <div id="modal">
         <div class="modal-content">
-            <h2>Convite Criado! 🎉</h2>
-            <p>Seu link único está pronto.</p>
-            <div class="link-display" id="linkFinal">...</div>
+            <h3>Link Criado! 🎉</h3>
+            <p style="font-size: 0.9rem; color: #666;">Copie o link e envie para a pessoa.</p>
+            <div id="linkFinal"
+                style="background: #f0f0f0; padding: 10px; border-radius: 10px; word-break: break-all; font-family: monospace; font-size: 0.8rem; margin-bottom: 15px;">
+            </div>
             <button class="btn-hero" onclick="copiarLink()">Copiar Link</button>
-            <button class="btn-hero" style="background:#ccc; margin-top:10px"
-                onclick="document.getElementById('modal').style.display='none'">Fechar</button>
+            <button onclick="document.getElementById('modal').style.display='none'"
+                style="background:none; border:none; color:#999; margin-top:15px; cursor:pointer;">Fechar</button>
         </div>
     </div>
 
     <script>
-        // --- 1. CONFIGURAÇÃO DE TEMAS ---
         const temas = {
             romantico: { color: '#d63384', bg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)', emoji: '❤️' },
             amizade: { color: '#007bff', bg: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)', emoji: '🍻' },
             festa: { color: '#7f00ff', bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', emoji: '🎉' },
-            natureza: { color: '#218c74', bg: 'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)', emoji: '🌿' },
             dark: { color: '#2d3436', bg: 'linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%)', emoji: '✨' }
         };
 
-        let currentTheme = 'romantico';
-
+        let opCount = 0;
         function mudarTema() {
             const t = document.getElementById('temaSelect').value;
-            currentTheme = t;
-            const config = temas[t];
-
-            // Atualiza Variáveis CSS
-            document.documentElement.style.setProperty('--primary', config.color);
-            document.documentElement.style.setProperty('--bg-grad', config.bg);
-
-            // Atualiza a cor dos botões de adicionar sub-opção
-            document.querySelectorAll('.option-card').forEach(card => {
-                card.style.borderLeftColor = config.color;
-            });
-
-            initParticles(config.emoji);
+            document.documentElement.style.setProperty('--primary', temas[t].color);
+            document.documentElement.style.setProperty('--bg-grad', temas[t].bg);
+            initParticles(temas[t].emoji);
         }
-
-        // --- 2. SISTEMA DE OPÇÕES ---
-        let opCount = 0;
 
         function addOpcaoMain() {
             const id = `op-${opCount++}`;
-            const container = document.getElementById('lista-opcoes');
-
             const div = document.createElement('div');
             div.className = 'glass-card option-card';
             div.id = id;
-            div.style.borderLeftColor = temas[currentTheme].color;
-
             div.innerHTML = `
-            <div class="row-main">
-                <input type="text" class="main-input" placeholder="O que vamos fazer? (Ex: Cinema)">
-                <button class="btn-mini" onclick="document.getElementById('${id}').remove()">✕</button>
+            <div style="display:flex; gap:10px;">
+                <input type="text" class="main-in" placeholder="Ex: Cinema" style="margin:0">
+                <button class="btn-del" onclick="document.getElementById('${id}').remove()">✕</button>
             </div>
-            <div class="sub-list" id="sub-${id}"></div>
-            <button class="btn-add-sub" onclick="addSub('${id}')">+ Adicionar Detalhe/Sub-opção</button>
+            <div id="subs-${id}"></div>
+            <button class="btn-add" style="margin-top:10px; font-size:0.7rem;" onclick="addSub('${id}')">+ Adicionar Detalhe</button>
         `;
-            container.appendChild(div);
-
-            // Foca no input novo
-            div.querySelector('input').focus();
+            document.getElementById('lista-opcoes').appendChild(div);
         }
 
         function addSub(parentId) {
-            const list = document.getElementById(`sub-${parentId}`);
             const div = document.createElement('div');
             div.className = 'sub-item';
-            div.innerHTML = `
-            <input type="text" class="sub-input" placeholder="Detalhe (Ex: Terror)">
-            <button class="btn-mini" style="background:#ccc; width:35px" onclick="this.parentElement.remove()">-</button>
-        `;
-            list.appendChild(div);
-            div.querySelector('input').focus();
+            div.innerHTML = `<input type="text" class="sub-in" placeholder="Ex: Terror" style="margin:0"><button class="btn-del" onclick="this.parentElement.remove()">-</button>`;
+            document.getElementById(`subs-${parentId}`).appendChild(div);
         }
 
-        // --- 3. GERAÇÃO DE LINK ---
         function gerarLink() {
-            const ddi = document.getElementById('ddi').value;
             const num = document.getElementById('whatsapp').value.replace(/\D/g, '');
-            const titulo = document.getElementById('titulo').value || "Convite Especial";
+            if (!num) return alert("Digite o WhatsApp!");
 
-            if (!num) { alert("Ops! Faltou o WhatsApp."); return; }
-
-            // Coleta dados
             const opcoes = [];
             document.querySelectorAll('.option-card').forEach(card => {
-                const main = card.querySelector('.main-input').value;
-                if (main) {
-                    const subs = Array.from(card.querySelectorAll('.sub-input'))
-                        .map(i => i.value).filter(v => v.trim() !== "");
-                    opcoes.push({ m: main, s: subs });
-                }
+                const m = card.querySelector('.main-in').value;
+                const s = Array.from(card.querySelectorAll('.sub-in')).map(i => i.value).filter(v => v);
+                if (m) opcoes.push({ m, s });
             });
 
-            if (opcoes.length === 0) { alert("Adicione pelo menos uma opção!"); return; }
+            const data = { n: document.getElementById('ddi').value + num, t: document.getElementById('titulo').value || "Convite", tm: document.getElementById('temaSelect').value, o: opcoes };
+            const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+            const link = window.location.href.split('index.html')[0] + 'convite.html?d=' + encoded;
 
-            const payload = {
-                n: ddi + num,
-                t: titulo,
-                tm: currentTheme,
-                o: opcoes
-            };
-
-            // Compacta e codifica
-            const str = JSON.stringify(payload);
-            const encoded = btoa(unescape(encodeURIComponent(str)));
-
-            // URL Final
-            const urlBase = window.location.href.replace('index.html', '').replace(/\/$/, '') + '/convite.html';
-            const finalLink = `${urlBase}?d=${encoded}`;
-
-            document.getElementById('linkFinal').innerText = finalLink;
+            document.getElementById('linkFinal').innerText = link;
             document.getElementById('modal').style.display = 'flex';
         }
 
         function copiarLink() {
             navigator.clipboard.writeText(document.getElementById('linkFinal').innerText);
-            alert("Copiado! Envie agora. 🚀");
+            alert("Link copiado!");
         }
 
-        // --- 4. PARTICLES ENGINE (CANVAS) ---
+        // Partículas
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Particle {
-            constructor(emoji) {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height + canvas.height;
-                this.emoji = emoji;
-                this.size = Math.random() * 20 + 10;
-                this.speed = Math.random() * 2 + 0.5;
-                this.opacity = 1;
-            }
-            update() {
-                this.y -= this.speed;
-                this.opacity -= 0.005;
-                if (this.y < -50 || this.opacity <= 0) {
-                    this.y = canvas.height + 50;
-                    this.x = Math.random() * canvas.width;
-                    this.opacity = 1;
-                }
-            }
-            draw() {
-                ctx.globalAlpha = this.opacity;
-                ctx.font = `${this.size}px serif`;
-                ctx.fillText(this.emoji, this.x, this.y);
-                ctx.globalAlpha = 1;
-            }
-        }
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
 
         function initParticles(emoji) {
             particles = [];
-            for (let i = 0; i < 25; i++) {
-                particles.push(new Particle(emoji));
-            }
+            for (let i = 0; i < 20; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, s: Math.random() * 20 + 10, sp: Math.random() * 1 + 0.5, e: emoji });
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
+            particles.forEach(p => {
+                p.y -= p.sp; if (p.y < -20) p.y = canvas.height + 20;
+                ctx.font = p.s + "px serif"; ctx.fillText(p.e, p.x, p.y);
+            });
             requestAnimationFrame(animate);
         }
-
-        // Iniciar
-        mudarTema(); // Carrega o tema inicial
-        addOpcaoMain(); // Adiciona um campo
-        animate(); // Inicia animação
-
+        mudarTema(); animate(); addOpcaoMain();
     </script>
 </body>
 
