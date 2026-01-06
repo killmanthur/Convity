@@ -20,12 +20,6 @@ Uma aplicação web intuitiva que permite criar convites personalizados com desi
 - **📱 Mobile-First:** 100% otimizado para celulares
 - **💬 Integração WhatsApp:** Resposta pré-preenchida automática
 
-## 📸 Screenshots
-
-| Gerador | Convite |
-|:---:|:---:|
-| ![Screenshot do Gerador](https://via.placeholder.com/300x600?text=Print+do+Gerador) | ![Screenshot do Convite](https://via.placeholder.com/300x600?text=Print+do+Convite) |
-
 ## 🚀 Como Funciona
 
 1. Usuário preenche dados no `index.html`
