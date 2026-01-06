@@ -250,6 +250,31 @@
                 opacity: 1;
             }
         }
+
+        .brand-name {
+        font-family: 'Arial Rounded MT Bold', 'Helvetica', sans-serif;
+        background: var(--primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 900;
+        font-size: 2.2rem;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 0.85rem;
+        color: #666;
+        opacity: 0.8;
+    }
+
+    footer a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: bold;
+    }
     </style>
 </head>
 
@@ -290,6 +315,9 @@
         <button class="btn-hero" style="background: #333; margin-bottom: 10px;" onclick="addOpcaoMain()">+ Nova Opção de
             Date</button>
         <button class="btn-hero" onclick="gerarLink()">GERAR CONVITE MÁGICO 🚀</button>
+        <footer>
+            Criado gratuitamente com o <strong>Convity</strong>.
+        </footer>
     </div>
 
     <!-- Modal Resultado -->

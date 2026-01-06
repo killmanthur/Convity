@@ -177,7 +177,32 @@
                 transform: translateY(0);
             }
         }
-    </style>
+
+         .footer-promo {
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px dashed rgba(0,0,0,0.1);
+        font-size: 0.8rem;
+        color: #777;
+    }
+
+    .footer-promo a {
+        display: inline-block;
+        margin-top: 5px;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 800;
+        background: var(--highlight-bg); /* Usa a cor do tema */
+        padding: 5px 12px;
+        border-radius: 20px;
+        transition: 0.3s;
+    }
+
+    .footer-promo a:hover {
+        transform: scale(1.05);
+        filter: brightness(0.9);
+    }
+</style>
 </head>
 
 <body>
@@ -193,6 +218,13 @@
 
             <button class="btn-main" id="btnAction" onclick="next()">Começar</button>
         </div>
+    </div>
+    <!-- RODAPÉ DE DIVULGAÇÃO -->
+    <div class="footer-promo">
+        Criado gratuitamente com o <strong>Convity</strong>.<br>
+        <a href="index.html" id="linkCriar">Crie um convite assim também! 🚀</a>
+    </div>
+    </div>
     </div>
 
     <script>
@@ -235,6 +267,7 @@
         document.getElementById('title').innerText = data.t;
         document.getElementById('desc').innerText = "Você recebeu um convite especial!";
         document.getElementById('btnAction').innerText = "Ver opções";
+        document.getElementById('linkCriar').href = window.location.href.split('convite.html')[0] + 'index.html';
 
         function renderOptions(optionsArray, type) {
             let html = '<div class="options-wrapper">';
